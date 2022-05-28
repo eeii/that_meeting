@@ -15,7 +15,9 @@ class IssueMeeting::Recurrence
     BY_POSITION = :position
 
     def self.load(str)
-        new(str.nil? ? {} : YAML.load(str.to_s))
+      new(str.nil? ? {} : (YAML.respond_to?(:unsafe_load) ?
+                           YAML.unsafe_load(str.to_s) :
+                           YAML.load(str.to_s)))
     end
 
     def self.dump(value)
